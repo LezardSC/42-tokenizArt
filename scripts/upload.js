@@ -1,0 +1,61 @@
+const { PinataSDK } = require("pinata-web3")
+const fs = require("fs")
+require("dotenv").config()
+
+const pinata = new PinataSDK({
+    pinataJwt: process.env.PINATA_JWT,
+    pinataGateway: process.env.GATEWAY_URL
+})
+
+async function uploadImage() {
+    try {
+        const filePath = "./images/NFT_42.png";
+        
+        if (!filePath.match(/\.(png|jpg|jpeg)$/i)) {
+            console.error("Invalid file type. Please upload a PNG or JPG image.");
+            return;
+        }
+
+        const blob = new Blob([fs.readFileSync(filePath)]);
+        const file = new File([blob], "NFT_42.png", { type: "image/png" })
+        const upload = await pinata.upload.file(file);
+        console.log("Image uploaded successfully: ", upload);
+        return upload.IpfsHash;
+    } catch(error) {
+        console.log("Error uploading image: ", error.message || error);
+        return;
+    }
+}
+
+async function uploadMetadata(cid) {
+    try {
+        // TODO create a file
+        const metadata = {
+            name: "42Girl",
+            description: "First upload of my NFT",
+            image: `https://gateway.pinata.cloud/ipfs/${cid}`
+        };
+
+        const upload = await pinata.upload.json(metadata);
+
+        console.log("Metadata uploaded successfully: ", upload);
+        
+        return upload.IpfsHash;
+    } catch (error) {
+        console.error("Error uploading metadata: ", error.message || error);
+    }
+}
+
+async function main() {
+    const image = await uploadImage();
+
+    if (!image || image === undefined) {
+        console.error("Failed to upload image. Exiting...");
+        return ;
+    }
+    const metadata = await uploadMetadata(image);
+
+    console.log(`Image available at: https://gateway.pinata.cloud/ipfs/${image}`);
+    console.log(`Metadata available at: https://gateway.pinata.cloud/ipfs/${metadata}`);
+}
+main();
