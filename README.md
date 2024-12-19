@@ -11,6 +11,9 @@
 (Node version >= 20)
 `node scripts/upload.js`
 
+`npx hardhat compile`
+`npx hardhat run --network sepolia deployment/deploy.js`
+
 ipfs extension:
 'https://github.com/ipfs/ipfs-companion'
 
