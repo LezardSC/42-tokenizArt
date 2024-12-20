@@ -33,8 +33,10 @@ async function uploadMetadata(cid) {
     try {
         const metadata = {
             name: "42Girl",
-            description: "First upload of my NFT",
-            image: `https://gateway.pinata.cloud/ipfs/${cid}`
+            artist: "jrenault",
+            description: "NFT for the 42 school project TokenizArt. Drawn by Hordake.",
+            image: `https://gateway.pinata.cloud/ipfs/${cid}`,
+            
         };
 
         fs.writeFileSync(path.join(__dirname, "../../images/metadata.json"), JSON.stringify(metadata, null, 2));

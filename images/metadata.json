@@ -1,5 +1,6 @@
 {
   "name": "42Girl",
-  "description": "First upload of my NFT",
+  "artist": "jrenault",
+  "description": "NFT for the 42 school project TokenizArt. Drawn by Hordake.",
   "image": "https://gateway.pinata.cloud/ipfs/bafybeibzhefvjoqpgzstdqhptacerk2tlh4k3fbk6j4i5rsexb7dirvmg4"
 }

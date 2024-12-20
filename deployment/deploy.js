@@ -12,23 +12,22 @@ async function main() {
 	const Girl42 = await GirlToken.deploy(
 		"Girl42",
 		"G42",
-		process.env.IPFS_HASH_METADATA,
 		deployer.address
 	);
 
 	await Girl42.waitForDeployment();
 
-	await mintNft(Girl42);
+	await mintNft(deployer, Girl42);
 }
 
-async function mintNft(Girl42) {
+async function mintNft(deployer, Girl42) {
 	const address = await Girl42.getAddress();
 
 	console.log("Girl42 Token deployed at: ", address);
 
 	const metadataURI = `ipfs://${process.env.IPFS_HASH_METADATA}`;
-	const onChainMetadata = loadOnChainMetadata(path.join(__dirname, "../../images/metadata.json"));
-    const onChainImage = loadOnChainImage(path.join(__dirname, "../../images/NFT_42.png"));
+	const onChainMetadata = loadOnChainMetadata(path.join(__dirname, "../images/metadata.json"));
+    const onChainImage = loadOnChainImage(path.join(__dirname, "../images/NFT_42.svg"));
 
     const tx = await Girl42.mintNFT(deployer.address, metadataURI, onChainMetadata, onChainImage);
 
@@ -53,8 +52,7 @@ function loadOnChainMetadata(metadataPath) {
 function loadOnChainImage(imagePath) {
     const imageData = fs.readFileSync(imagePath);
     const base64Image = imageData.toString("base64");
-    // Adjust MIME type if not SVG. For PNG: "data:image/png;base64,"
-    return `data:image/png;base64,${base64Image}`;
+    return `data:image/svg;base64,${base64Image}`;
 }
 
 main().catch(error => {

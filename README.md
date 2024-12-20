@@ -1,7 +1,7 @@
 `npm init`
 `npm install hardhat`
 `npx hardhat` (Javascript project, yes to everything)
-`npm i ethers`
+`npm install ethers`
 `npm install @nomiclabs/hardhat-etherscan`
 `npm install @openzeppelin/contracts`
 `npm install dotenv`
@@ -9,10 +9,14 @@
 `npm install pinata-web3`
 
 (Node version >= 20)
-`node scripts/upload.js`
+`node code/scripts/upload.js`
 
 `npx hardhat compile`
 `npx hardhat run --network sepolia deployment/deploy.js`
+
+used 'https://www.pngtosvg.com/' to turn the image into a svg.
+https://svgomg.net/
+
 
 ipfs extension:
 'https://github.com/ipfs/ipfs-companion'
