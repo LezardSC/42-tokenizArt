@@ -25,21 +25,12 @@ async function mintNft(deployer, Girl42) {
 
 	console.log("Girl42 contract deployed at: ", address);
 
-	const onChainMetadata = loadOnChainMetadata(path.join(__dirname, "../images/metadata.json"));
-    const tx = await Girl42.mintNFT(deployer.address, onChainMetadata);
+	const metadataURI = process.env.IPFS_HASH_METADATA;
+    const tx = await Girl42.mintNFT(deployer.address, `ipfs://${metadataURI}`);
 
     await tx.wait();
 	console.log(`On-chain metadata and image have been set.`);
     console.log(`Minted NFT with metadata URI: ${metadataURI}`);
-}
-
-/**
- * @param {string} metadataPath
- * @returns {string}
- */
-function loadOnChainMetadata(metadataPath) {
-    const metadata = fs.readFileSync(metadataPath, "utf8");
-    return metadata;
 }
 
 main().catch(error => {

@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract Girl42 is ERC721, Ownable {
 	using Strings for uint256;
 
-	string private _metadataJSON;
+	string private _metadataIPFS;
 	bool private _minted;
 
 	constructor(
@@ -31,7 +31,7 @@ contract Girl42 is ERC721, Ownable {
 		
 		_mint(recipient, 1); // Mint the token with a fixed ID of 1
 		_minted = true;
-		_metadataJSON = onChainMetadata;
+		_metadataIPFS = onChainMetadata;
 	}
 
     function tokenURI(uint256 tokenId) public view override
@@ -39,7 +39,7 @@ contract Girl42 is ERC721, Ownable {
 		require(tokenId == 1, "Only one NFT exists with ID 1.");
         require(_ownerOf(tokenId) != address(0), "ERC721Metadata: URI query for nonexistent token");
         
-		return _metadataJSON;
+		return _metadataIPFS;
     }
 
 	    /// @dev Check if the token exists
@@ -49,11 +49,11 @@ contract Girl42 is ERC721, Ownable {
 
     function getOnChainMetadata() public view returns (string memory) {
         require(_ownerOf(1) != address(0), "Token does not exist");
-        return _metadataJSON;
+        return _metadataIPFS;
     }
 
     function updateOnChainMetadata(string memory newMetadata) public onlyOwner {
         require(_ownerOf(1) != address(0), "Token does not exist");
-        _metadataJSON = newMetadata;
+        _metadataIPFS = newMetadata;
     }
 }
