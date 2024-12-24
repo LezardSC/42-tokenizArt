@@ -5,6 +5,7 @@
 `npm install @nomiclabs/hardhat-etherscan`
 `npm install @openzeppelin/contracts`
 `npm install dotenv`
+`npm install express`
 
 `npm install pinata-web3`
 
@@ -13,6 +14,11 @@
 
 `npx hardhat compile`
 `npx hardhat run --network sepolia deployment/deploy.js`
+
+`cd website`
+`node server.js`
+`npm install cors`
+`http-server`
 
 used 'https://www.pngtosvg.com/' to turn the image into a svg.
 https://svgomg.net/
