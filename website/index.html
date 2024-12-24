@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Girl42 NFT Minting</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Girl42 NFT Minting</h1>
-    <button id="connectButton">Connect Wallet</button>
-    <div id="walletAddress"></div>
-    <button id="mintButton" disabled>Mint NFT</button>
-    <div id="status"></div>
+    <div class="container">
+        <h1>Girl42 NFT Minting</h1>
+        <div class="wallet-section">
+            <button id="connectButton" class="btn">Connect Wallet</button>
+            <div id="walletAddress" class="info"></div>
+        </div>
+        <div class="nft-section">
+            <div class="nft-preview">
+                <img id="nftImage" src="placeholder.png" alt="NFT Preview">
+            </div>
+            <button id="mintButton" class="btn" disabled>Mint NFT</button>
+            <div id="status" class="info"></div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
     <script type="module" src="app.js"></script>
