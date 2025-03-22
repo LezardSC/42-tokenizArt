@@ -15,7 +15,8 @@ Second project in the blockchain branch of 42 School. The aim of the project is 
 - [Website Interaction](#website-interaction)
 - [More documentation](#more-documentation)
 - [Contributing](#contributing)
-- [License & author](#license-&-author)
+- [License](#license)
+- [Author](#author)
 
 ## Introduction
 
@@ -114,7 +115,6 @@ A design choice was made to restrict the Girl42 contract to minting only a singl
 ├── hardhat.config.js
 ├── package-lock.json
 ├── package.json
-├── README.md
 └── .env
 ```
 
@@ -140,20 +140,12 @@ A design choice was made to restrict the Girl42 contract to minting only a singl
 
 2. **Install Dependencies**
 ```bash
-    npm init
-	npm install
+npm install
 ```
 
 - If npm didn't installed everything, here's all the dependencies:
     ```bash
-	    npm install @openzeppelin/  contracts
-        npm install hardhat
-        npm install ethers
-        npm install @nomiclabs/ hardhat-etherscan
-	    npm install dotenv
-        npm install express
-        npm install pinata-web3
-        npm install cors
+npm install @openzeppelin/contracts hardhat ethers @nomiclabs/hardhat-etherscan dotenv express pinata-web3 cors
     ```
 
 3. **Create an Environment File**
