@@ -42,7 +42,7 @@ contract Girl42 is ERC721, Ownable {
 		return _metadataIPFS;
     }
 
-	    /// @dev Check if the token exists
+	    /// Check if the token exists
     function exists() public view returns (bool) {
         return _minted;
     }
