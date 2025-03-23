@@ -21,7 +21,7 @@ Second project in the blockchain branch of 42 School. The aim of the project is 
 ## Introduction
 
 TokenizArt is a blockchain-based project created for the 42 School blockchain curriculum. The goal is to create, deploy, and manage a unique ERC721 NFT on Ethereum’s Sepolia test network. The NFT, named Girl42, uses decentralized storage (IPFS via Pinata) to host images and metadata.
-The artist that designed the NFT is Horzeau.
+The artist that designed the NFT is [Horzeau](https://x.com/Horzeau).
 
 ## Key Features
 
@@ -249,3 +249,5 @@ This project is part of the **42 School curriculum** and follows its evaluation 
 ## Author
 
 login: jrenault
+
+author of the NFT art: [Horzeau](https://x.com/Horzeau)
