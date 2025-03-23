@@ -166,7 +166,7 @@ npm install @openzeppelin/contracts
 
 6. **Deploy to Sepolia Network**
 ```bash
-	npx hardhat run --network sepolia deployment/scripts/deploy.js
+	npx hardhat run --network sepolia deployment/deploy.js
 ```
 
 7. **Update Contract Address**
@@ -219,8 +219,7 @@ The project includes a simple frontend website built with HTML, CSS, JavaScript,
 Start the backend server (for ABI and configuration):
 
 ```bash
-cd website
-node server.js
+node website/server.js
 ```
 
 Then serve your frontend (recommended using http-server):
@@ -229,6 +228,7 @@ Then serve your frontend (recommended using http-server):
 cd website
 http-server
 ```
+Or use live server, or any equivalent.
 
 Open your browser and navigate to the provided local URL.
 

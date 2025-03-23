@@ -33,7 +33,7 @@ async function uploadMetadata(cid) {
     try {
         const metadata = {
             name: "42Girl",
-            description: "NFT for the 42 school project TokenizArt. Drawn by Hordake.",
+            description: "NFT for the 42 school project TokenizArt. Drawn by Horzeau.",
             image: `ipfs://${cid}`,
             external_link: `https://gateway.pinata.cloud/ipfs/${cid}`,
             artist: "jrenault"

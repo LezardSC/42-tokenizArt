@@ -8,7 +8,7 @@ const pinata = new PinataSDK({
 
 async function main() {
 	try {
-		const file = await pinata.gateways.get(process.env.IPFS_HASH);
+		const file = await pinata.gateways.get(process.env.IPFS_HASH_METADATA);
 
 		console.log(file.data);
 	} catch (error) {
