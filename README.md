@@ -100,7 +100,7 @@ A design choice was made to restrict the Girl42 contract to minting only a singl
 ├── images/
 │   ├── NFT_42.png
 │   └── metadata.json
-├── documentation
+├── documentation/
 ├── scripts/
 │   ├── upload.js
 │   └── fetch.js
@@ -140,12 +140,14 @@ A design choice was made to restrict the Girl42 contract to minting only a singl
 
 2. **Install Dependencies**
 ```bash
+npm init
 npm install
+npm install @openzeppelin/contracts
 ```
 
 - If npm didn't installed everything, here's all the dependencies:
     ```bash
-npm install @openzeppelin/contracts hardhat ethers @nomiclabs/hardhat-etherscan dotenv express pinata-web3 cors
+	npm install @openzeppelin/contracts hardhat ethers @nomiclabs/hardhat-etherscan dotenv express pinata-web3 cors
     ```
 
 3. **Create an Environment File**
