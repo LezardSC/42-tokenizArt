@@ -9,20 +9,42 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Girl42 NFT Minting</h1>
-        <div class="wallet-section">
-            <button id="connectButton" class="btn">Connect Wallet</button>
-            <div id="walletAddress" class="info"></div>
-        </div>
-        <div class="nft-section">
-            <div class="nft-preview">
-                <img id="nftImage" src="placeholder.png" alt="NFT Preview">
+    <main class="container">
+        <header>
+            <h1>Girl42</h1>
+            <p class="subtitle">A one-of-one ERC721 on Sepolia &middot; art by Horzeau</p>
+        </header>
+
+        <section class="card">
+            <div class="wallet-bar">
+                <span id="networkBadge" class="badge" hidden></span>
+                <span id="walletAddress" class="address" hidden></span>
+                <button id="connectButton" class="btn btn-secondary">Connect Wallet</button>
+                <button id="switchButton" class="btn btn-secondary" hidden>Switch network</button>
             </div>
-            <button id="mintButton" class="btn" disabled>Mint NFT</button>
-            <div id="status" class="info"></div>
-        </div>
-    </div>
+
+            <div id="artFrame" class="art-frame">
+                <div id="placeholder" class="placeholder">
+                    <span class="placeholder-mark">?</span>
+                    <span id="placeholderText" class="placeholder-text">Not minted yet</span>
+                </div>
+                <img id="nftImage" alt="Girl42 NFT artwork" hidden>
+            </div>
+
+            <dl id="nftDetails" class="details" hidden>
+                <dt>Name</dt><dd id="nftName"></dd>
+                <dt>Description</dt><dd id="nftDescription"></dd>
+                <dt>Token ID</dt><dd>#1</dd>
+                <dt>Owner</dt><dd id="nftOwner"></dd>
+                <dt>Metadata</dt><dd id="nftMetadata"></dd>
+            </dl>
+
+            <button id="mintButton" class="btn btn-primary" disabled>Mint NFT</button>
+            <div id="status" class="status"></div>
+        </section>
+
+        <footer id="contractInfo" class="footer"></footer>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
     <script type="module" src="app.js"></script>

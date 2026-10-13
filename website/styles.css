@@ -1,74 +1,265 @@
+/* Colors taken from the artwork */
+:root {
+    --pink: #f6b3cc;
+    --cyan: #9fd8e6;
+    --red: #d8262f;
+    --red-dark: #a91b23;
+    --green: #3fae3a;
+    --ink: #1f1a24;
+    --muted: #6b6470;
+    --card: #ffffff;
+    --border: #ece6ee;
+}
+
 /* General Reset */
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    /* Halftone dots over a pink-to-cyan gradient, like the artwork's background */
+    background:
+        radial-gradient(rgba(255, 255, 255, 0.55) 2px, transparent 2.5px) 0 0 / 18px 18px,
+        linear-gradient(135deg, var(--pink), var(--cyan));
+    background-attachment: fixed;
 }
 
 /* Container */
 .container {
-    max-width: 800px;
+    max-width: 520px;
     margin: 0 auto;
-    padding: 20px;
-    text-align: center;
+    padding: 32px 16px;
 }
 
-/* Headings */
-h1 {
-    font-size: 2.5rem;
+header {
+    text-align: center;
     margin-bottom: 20px;
-    color: #222;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.75rem;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    color: var(--muted);
+}
+
+/* Card */
+.card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 12px 40px rgba(31, 26, 36, 0.15);
+}
+
+/* Wallet bar */
+.wallet-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 38px;
+    margin-bottom: 16px;
+}
+
+.badge,
+.address {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge {
+    background: #e7f6e6;
+    color: var(--green);
+    margin-right: auto;
+}
+
+.badge-error {
+    background: #fde8e9;
+    color: var(--red);
+}
+
+.address {
+    background: #f3eff4;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
 /* Buttons */
 .btn {
-    display: inline-block;
     padding: 10px 20px;
-    margin: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    background-color: #007bff;
+    font: inherit;
+    font-weight: 700;
     border: none;
-    border-radius: 5px;
+    border-radius: 999px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active:not(:disabled) {
+    transform: scale(0.97);
 }
 
 .btn:disabled {
-    background-color: #ccc;
+    background-color: #ddd6de;
+    color: #8f8792;
     cursor: not-allowed;
 }
 
-.btn:hover:not(:disabled) {
-    background-color: #0056b3;
-}
-
-/* Info Section */
-.info {
-    margin-top: 10px;
-    font-size: 1rem;
-    color: #555;
-}
-
-/* NFT Preview Section */
-.nft-section {
-    margin-top: 30px;
-}
-
-.nft-preview {
-    margin: 20px auto;
-    max-width: 300px;
-    max-height: 300px;
-    overflow: hidden;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background-color: #fff;
-}
-
-.nft-preview img {
-    width: 100%;
-    height: auto;
+.btn-primary {
     display: block;
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    font-size: 1.1rem;
+    color: white;
+    background-color: var(--red);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--red-dark);
+}
+
+.btn-secondary {
+    color: var(--ink);
+    background-color: #f3eff4;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #e6e0e8;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* NFT artwork */
+.art-frame {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background:
+        radial-gradient(rgba(255, 255, 255, 0.6) 3px, transparent 3.5px) 0 0 / 22px 22px,
+        linear-gradient(135deg, var(--pink), var(--cyan));
+}
+
+.art-frame img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    filter: blur(12px);
+    transition: opacity 0.8s ease, transform 1.2s ease, filter 1s ease;
+}
+
+.art-frame.revealed img {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+.placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: white;
+    text-shadow: 0 2px 12px rgba(31, 26, 36, 0.25);
+}
+
+.placeholder-mark {
+    font-size: 7rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.placeholder-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Pulses while a transaction or IPFS download is in progress */
+.art-frame.loading .placeholder-mark {
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    50% {
+        opacity: 0.4;
+        transform: scale(0.92);
+    }
+}
+
+/* Token details */
+.details {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 6px 16px;
+    margin: 16px 0 0;
+    font-size: 0.95rem;
+}
+
+.details dt {
+    color: var(--muted);
+}
+
+.details dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+a {
+    color: var(--red);
+}
+
+/* Status line */
+.status {
+    min-height: 1.5em;
+    margin-top: 12px;
+    text-align: center;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+.status-success {
+    color: var(--green);
+}
+
+.status-error {
+    color: var(--red);
+}
+
+.status-pending {
+    color: var(--ink);
+}
+
+.footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .art-frame img,
+    .art-frame.loading .placeholder-mark {
+        transition: none;
+        animation: none;
+    }
 }
