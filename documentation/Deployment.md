@@ -1,182 +1,97 @@
-# Deployment Documentation
+# Deploying and minting Girl42
 
-## Overview
+From an empty clone to a minted NFT on Sepolia.
 
-Deployment covers the process of deploying the Girl42 NFT smart contract onto the Ethereum Sepolia test network, using the Hardhat development environment and Infura as the Ethereum node provider.
+## 1. Requirements
 
-## Smart Contract Deployment (`deploy.js`)
+- **Node.js 20+** (the upload script relies on the global `File` class).
+- An **Infura** project, for its Sepolia endpoint.
+- A **Pinata** account, for IPFS uploads (you need a JWT and a gateway URL).
+- A **wallet** (e.g. MetaMask) with some Sepolia ETH from a faucet. Its private key is used to deploy, and this wallet becomes the contract owner.
 
-#### Deployment Script Workflow:
-
-- Connects to Ethereum using Hardhat and deployer's wallet.
-- Deploys the `Girl42` smart contract to the Sepolia testnet.
-- Verifies successful deployment and retrieves contract address.
-
-#### Detailed Steps:
-
-1. **Initialization**
-
-Load dependencies and environment variables:
-
-```javascript
-const hre = require("hardhat");
-require("dotenv").config();
+```bash
+npm install
+cp .env.example .env
 ```
 
-2. **Contract Deployment**
+## 2. Environment variables
 
-Deploys the smart contract using deployer's wallet credentials:
+| Variable | Needed for | Value |
+|---|---|---|
+| `PRIVATE_KEY` | every Hardhat command | Private key of the deployer/owner wallet. |
+| `INFURA_ENDPOINT` | every Hardhat command | `https://sepolia.infura.io/v3/<your project id>` |
+| `PINATA_JWT` | `upload.js`, `fetch.js` | Pinata API JWT. |
+| `GATEWAY_URL` | `upload.js`, `fetch.js` | Your Pinata gateway domain. |
+| `IPFS_HASH_METADATA` | minting, `fetch.js`, website | Metadata hash printed by `upload.js`. |
+| `CONTRACT_ADDRESS` | website | Address printed by `deploy.js`. |
 
-```javascript
-async function main() {
-    const [deployer] = await hre.ethers.getSigners();
-    console.log("Deploying the contract with account: ", deployer.address);
+`PINATA_PUBLIC_KEY`, `PINATA_PRIVATE_KEY` and `IPFS_HASH_IMAGE` appear in `.env.example` but are not read by any script.
 
-    const GirlToken = await hre.ethers.getContractFactory("Girl42");
-    const Girl42 = await GirlToken.deploy(
-        "Girl42",
-        "G42",
-        deployer.address
-    );
+Hardhat loads the Sepolia config on every run, so `PRIVATE_KEY` and `INFURA_ENDPOINT` must be set even for `compile` and `test`. Never commit `.env`.
 
-    await Girl42.waitForDeployment();
-
-    const address = await Girl42.getAddress();
-    console.log("Girl42 contract deployed at: ", address);
-}
-
-main().catch(error => {
-    console.error(error);
-    process.exitCode = 1;
-});
-```
-
-#### Deployment Configuration (Hardhat)
-
-Your Hardhat configuration specifies the Solidity compiler version and sets paths and network details.
-
-`hardhat.config.js`
-
-```javascript
-module.exports = {
-  solidity: "0.8.28",
-  paths: {
-    sources: "./code/contracts",
-    tests: "./code/tests",
-    cache: "./code/cache",
-    artifacts: "./code/artifacts"
-  },
-  networks: {
-    sepolia: {
-      url: process.env.INFURA_ENDPOINT,
-      accounts: [process.env.PRIVATE_KEY]
-    }
-  }
-};
-```
-
-- **Paths:** Organizes project files clearly according to the 42 project standard.
-- **Networks:** Uses the Sepolia network via Infura as specified in environment variables.
-
-#### Environment Setup (Infura & Wallet)
-
-Ensure your `.env` file includes Infura and wallet private key details:
-
-```plaintext
-INFURA_ENDPOINT=https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID
-PRIVATE_KEY=YOUR_WALLET_PRIVATE_KEY
-```
-- **Infura:** Provides Ethereum node access without running a full node.
-
-- **Wallet (Private Key):** Used to deploy the contract; keep private keys secure and confidential.
-
-## Deployment Commands
-
-Run these commands sequentially in your terminal to deploy:
-
-1. **Compile the Contract**
+## 3. Compile and test
 
 ```bash
 npx hardhat compile
+npx hardhat test
 ```
 
-2. **Deploy the Contract**
+`compile` also produces the ABI in `code/artifacts/`, which the website backend serves.
+
+## 4. Upload the art to IPFS
+
+```bash
+node code/scripts/upload.js
+```
+
+This uploads `images/NFT_42.png`, builds the metadata JSON (writing a copy to `images/metadata.json`), uploads it, and prints both IPFS links. Copy the **metadata** hash into `IPFS_HASH_METADATA`.
+
+To check the upload worked:
+
+```bash
+node code/scripts/fetch.js   # prints the metadata JSON stored at IPFS_HASH_METADATA
+```
+
+## 5. Deploy the contract
 
 ```bash
 npx hardhat run --network sepolia deployment/deploy.js
 ```
-- The script logs the deployed contract’s address upon successful deployment.
 
-## Verifying Deployment
+Output:
 
-To verify the deployment, note the contract address provided by the deployment script output:
-
-```plaintext
-Deploying the contract with account: 0xYourDeployerAddress
-Girl42 contract deployed at: 0xYourContractAddress
+```
+Deploying the contract with account:  0x...
+Girl42 contract deployed at:  0x...
 ```
 
-Verify the deployment on [Sepolia Etherscan](https://sepolia.etherscan.io/) by pasting the deployed contract address.
+Put the contract address in `CONTRACT_ADDRESS`, and check it on [Sepolia Etherscan](https://sepolia.etherscan.io/). Redeploying creates a new contract, so update the address each time.
 
-## Post-Deployment Steps
+## 6. Mint
 
-After deploying, it's important to:
+Only the owner wallet can mint, and only once. Two ways:
 
-1. Update the `.env` file with the newly deployed contract address for the website interaction:
+- **From the deploy script:** uncomment `// await mintNft(deployer, Girl42);` in `deployment/deploy.js` before deploying. It mints to the deployer with `ipfs://<IPFS_HASH_METADATA>`.
+- **From the website:** see below. Connect MetaMask with the **owner** wallet, otherwise the transaction reverts.
 
-```plaintext
-CONTRACT_ADDRESS=0xYourDeployedContractAddress
+## 7. Run the website
+
+```bash
+node website/server.js        # backend on http://localhost:3000
+npx http-server website       # or any static server / VS Code Live Server
 ```
 
-2. Verify contract functionality by interacting with the frontend website.
+The backend has two endpoints, used by `website/app.js`:
 
-## Testing the Deployment
+- `GET /abi` — the contract ABI, read from `code/artifacts/` (so compile first).
+- `GET /config` — `CONTRACT_ADDRESS` and `IPFS_HASH_METADATA` from `.env`.
 
-Your test suite includes automated checks to verify successful deployment:
+On the page: **Connect** MetaMask (on Sepolia), the page shows whether the token is already minted, then **Mint** sends `mintNFT(yourAddress, "ipfs://<metadata hash>")`.
 
-✅ **Contract Owner is Correctly Set**
+## Troubleshooting
 
-Ensures the contract ownership matches the deployer's wallet address:
-
-```javascript
-it("Should set the correct owner", async function () {
-    expect(await girl42.owner()).to.equal(initialOwner);
-});
-```
-
-✅ **Correct Contract Initialization**
-
-Checks that the deployed contract has the correct NFT name and symbol:
-
-```javascript
-it("Should have the correct name and symbol", async function () {
-    expect(await girl42.name()).to.equal(name);
-    expect(await girl42.symbol()).to.equal(symbol);
-});
-```
-
-🚫 **Preventing Premature Token Queries**
-
-Ensures the token does not exist prematurely after deployment:
-
-```javascript
-it("Should not have the token minted yet", async function () {
-    expect(await girl42.exists()).to.be.false;
-    await expect(girl42.tokenURI(tokenId))
-        .to.be.revertedWith("ERC721Metadata: URI query for nonexistent token");
-});
-```
-
-## Security Considerations
-
-- **Secure Private Keys:** Store wallet private keys safely; never expose them publicly.
-
-- **Infura API Key:** Securely store Infura API keys; avoid committing them to version control.
-
-- **Deployment Confirmation:** Always verify the deployed contract address independently on blockchain explorers.
-
-## Common Issues & Troubleshooting
-
-- **Deployment Failure (Incorrect Funds):** Ensure your Sepolia wallet has sufficient ETH (available via faucets).
-
-- **Network Connectivity Errors:** Confirm Infura credentials and endpoint correctness in `.env`.
+- **Hardhat config error on any command** — `.env` is missing or `PRIVATE_KEY` / `INFURA_ENDPOINT` are empty.
+- **Deployment fails with insufficient funds** — get Sepolia ETH from a faucet.
+- **`NFT already minted`** — the token exists; deploy a new contract if you need to mint again.
+- **`OwnableUnauthorizedAccount`** — you're not using the wallet that deployed the contract.
+- **Website can't load the contract** — `server.js` isn't running, the contracts aren't compiled, or `CONTRACT_ADDRESS` is outdated.
