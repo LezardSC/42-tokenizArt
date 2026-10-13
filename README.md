@@ -5,7 +5,7 @@ My own NFT on the Ethereum **Sepolia** testnet, made for the 42 School project *
 - **Contract:** `Girl42` (symbol `G42`), an ERC721 built on OpenZeppelin.
 - **Supply:** exactly one token (ID `1`), mintable only by the contract owner.
 - **Storage:** image and metadata are stored on IPFS through [Pinata](https://pinata.cloud).
-- **Frontend:** a small web page to connect MetaMask and mint the token.
+- **Frontend:** a small web page to connect MetaMask, mint the token, and display it as read from the chain and IPFS.
 - **Art:** drawn by [Horzeau](https://x.com/Horzeau).
 
 ## Repository layout

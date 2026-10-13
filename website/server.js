@@ -22,11 +22,22 @@ app.get('/abi', (req, res) => {
     }
 });
 
+function gatewayUrl() {
+    const gateway = process.env.GATEWAY_URL;
+    if (!gateway) {
+        return null;
+    }
+    const base = gateway.startsWith('http') ? gateway : `https://${gateway}`;
+    return `${base.replace(/\/+$/, '')}/ipfs/`;
+}
+
 // Serve contract address and metadata URI from environment variables
 app.get('/config', (req, res) => {
     res.json({
         contractAddress: process.env.CONTRACT_ADDRESS,
         metadataURI: process.env.IPFS_HASH_METADATA,
+        chainId: Number(process.env.CHAIN_ID || 11155111), // Sepolia by default
+        gatewayUrl: gatewayUrl(),
     });
 });
 
