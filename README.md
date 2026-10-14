@@ -1,4 +1,4 @@
-# Girl42 — TokenizArt
+# Girl42 - TokenizArt
 
 My own NFT on the Ethereum **Sepolia** testnet, made for the 42 School project *tokenizArt* (blockchain branch).
 
