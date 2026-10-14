@@ -272,8 +272,10 @@ window.addEventListener('load', async () => {
     }
     window.web3 = new Web3(window.ethereum);
 
+    let artifact;
     try {
-        const [artifact, backendConfig] = await Promise.all([
+        let backendConfig;
+        [artifact, backendConfig] = await Promise.all([
             fetch(`${BACKEND_URL}/abi`).then(res => res.json()),
             fetch(`${BACKEND_URL}/config`).then(res => res.json()),
         ]);
@@ -281,7 +283,6 @@ window.addEventListener('load', async () => {
         if (config.gatewayUrl) {
             gateways = [config.gatewayUrl, ...PUBLIC_GATEWAYS];
         }
-        girl42Contract = new window.web3.eth.Contract(artifact.abi, config.contractAddress);
     } catch (error) {
         console.error('Error loading contract details:', error);
         connectButton.disabled = true;
@@ -289,6 +290,14 @@ window.addEventListener('load', async () => {
         setStatus('Could not reach the backend. Is website/server.js running?', { kind: 'error' });
         return;
     }
+
+    if (!window.web3.utils.isAddress(config.contractAddress)) {
+        connectButton.disabled = true;
+        showPlaceholder('Invalid contract address');
+        setStatus(`CONTRACT_ADDRESS in .env is not a valid address: "${config.contractAddress}".`, { kind: 'error' });
+        return;
+    }
+    girl42Contract = new window.web3.eth.Contract(artifact.abi, config.contractAddress);
 
     showContractInfo();
     window.ethereum.on('accountsChanged', async accounts => {
