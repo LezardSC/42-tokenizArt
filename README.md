@@ -8,6 +8,10 @@ My own NFT on the Ethereum **Sepolia** testnet, made for the 42 School project *
 - **Frontend:** a small web page to connect MetaMask, mint the token, and display it as read from the chain and IPFS.
 - **Art:** drawn by [Horzeau](https://x.com/Horzeau).
 
+![Minting Girl42 on Sepolia](demo/girl42-demo.gif)
+
+*Connecting MetaMask, minting the token on Sepolia and loading the artwork from IPFS ([full-quality video](demo/girl42-demo.mp4)).*
+
 ## Repository layout
 
 ```
@@ -20,6 +24,7 @@ deployment/deploy.js        deploys the contract (and can mint)
 images/                     the artwork and its generated metadata.json
 website/                    minting page (index.html, app.js) + small Express backend (server.js)
 documentation/              detailed docs
+demo/                       demo of the minting page (GIF + MP4)
 hardhat.config.js           Hardhat paths and Sepolia network
 .env.example                template for the required environment variables
 ```
